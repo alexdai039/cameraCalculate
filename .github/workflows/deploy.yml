@@ -18,17 +18,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
       - name: Install
         run: |
-          cd cameraCalculate
           npm ci || npm i
       - name: Build
         run: |
-          cd cameraCalculate
           npm run build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: cameraCalculate/dist
+          publish_dir: dist
           force_orphan: true 
