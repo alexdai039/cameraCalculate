@@ -4,6 +4,23 @@ export type Locale = 'zh' | 'en' | 'de';
 export const locale = writable<Locale>('zh');
 export const currentLocale = derived(locale, v => v);
 
+/**
+ * A derived store that returns a translation function.
+ * Usage in Svelte components: {$t('key', { params })}
+ */
+export const t = derived(locale, ($locale) => {
+	return (key: string, params?: Record<string, string | number>): string => {
+		const table = dict[$locale] || dict.zh;
+		let value = table[key] || dict.en[key] || key;
+		if (params) {
+			for (const k of Object.keys(params)) {
+				value = value.replace(`{${k}}`, String(params[k]));
+			}
+		}
+		return value;
+	};
+});
+
 export const LANG_NAMES: Record<Locale, string> = {
 	zh: '中文',
 	en: 'English',
@@ -83,6 +100,8 @@ const dict: Record<Locale, Record<string, string>> = {
 		'misc.fnLabel': 'FN = {value} mm',
 		'misc.projectionLabel': '传感器投影 = {w} × {h} mm',
 		'misc.couplerLabel': 'C接口 = {value} ×',
+		'misc.cameraResLabel': '分辨率 = {w} × {h} px',
+		'misc.pixelPitchLabel': '像素尺寸 = {value} μm',
 
 		'status.optimal': '合适',
 		'status.undersampled': '欠采样',
@@ -169,6 +188,8 @@ const dict: Record<Locale, Record<string, string>> = {
 		'misc.fnLabel': 'FN = {value} mm',
 		'misc.projectionLabel': 'Sensor projection = {w} × {h} mm',
 		'misc.couplerLabel': 'C-mount = {value}×',
+		'misc.cameraResLabel': 'Res. = {w} × {h} px',
+		'misc.pixelPitchLabel': 'Pixel = {value} μm',
 
 		'status.optimal': 'optimal',
 		'status.undersampled': 'undersampled',
@@ -255,6 +276,8 @@ const dict: Record<Locale, Record<string, string>> = {
 		'misc.fnLabel': 'FN = {value} mm',
 		'misc.projectionLabel': 'Sensorprojektion = {w} × {h} mm',
 		'misc.couplerLabel': 'C‑Mount = {value}×',
+		'misc.cameraResLabel': 'Aufl. = {w} × {h} px',
+		'misc.pixelPitchLabel': 'Pixel = {value} μm',
 
 		'status.optimal': 'optimal',
 		'status.undersampled': 'Unterabtastung',
@@ -286,18 +309,6 @@ const dict: Record<Locale, Record<string, string>> = {
 		'tips.displayMag': 'Bildschirmvergrößerung bei 100% Zoom (nur Betrachtungsmaß).'
 	}
 };
-
-export function t(key: string, params?: Record<string, string | number>): string {
-	const l = get(locale);
-	const table = dict[l] || dict.zh;
-	let value = table[key] || dict.en[key] || key;
-	if (params) {
-		for (const k of Object.keys(params)) {
-			value = value.replace(`{${k}}`, String(params[k]));
-		}
-	}
-	return value;
-}
 
 export function tL(l: Locale, key: string, params?: Record<string, string | number>): string {
 	const table = dict[l] || dict.zh;

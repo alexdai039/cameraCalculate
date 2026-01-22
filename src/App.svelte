@@ -22,7 +22,15 @@
 	}
 
 	// common option lists
-	const C_ADAPTER_OPTIONS = [0.35, 0.5, 0.63, 1];
+	const C_ADAPTER_OPTIONS = [
+		{ label: 'P90-C 1/3" 0.35x', value: 0.35 },
+		{ label: 'P90-C 1/2" 0.5x', value: 0.5 },
+		{ label: 'P90-C 2/3" 0.65x', value: 0.65 },
+		{ label: '60N C 2/3" 0.5x', value: 0.5 },
+		{ label: '60N C 2/3" 0.63x', value: 0.63 },
+		{ label: '60N C 1" 0.8x', value: 0.8 },
+		{ label: '60N C 1" 1.0x', value: 1.0 }
+	];
 	const FN_OPTIONS = [20, 22, 23, 25];
 	const OBJECTIVE_OPTIONS = [2, 4, 5, 10, 20, 40, 50, 60, 63, 100];
 	const DEFAULT_NA: Record<number, number> = { 2: 0.06, 4: 0.10, 5: 0.12, 10: 0.25, 20: 0.4, 40: 0.65, 50: 0.8, 60: 0.85, 63: 0.9, 100: 1.25 };
@@ -102,7 +110,7 @@
 
 	function samplingBadgeClassText() {
 		const key = `status.${out.samplingStatus}`;
-		return t(key);
+		return $t(key);
 	}
 	function samplingBadgeClassColor() {
 		return out.samplingStatus === 'optimal' ? 'badge ok' : 'badge err';
@@ -126,20 +134,20 @@
 <div class="app-shell">
 	<div class="sidebar-left">
 		<div class="header" style="display:flex;gap:8px;align-items:center;justify-content:space-between;">
-			<div>{t('titles.parameters')}</div>
+			<div>{$t('titles.parameters')}</div>
 			<div style="display:flex;gap:6px;align-items:center;">
-				<label class="label" for="lang-select">{t('labels.language')}</label>
+				<label class="label" for="lang-select">{$t('labels.language')}</label>
 				<select id="lang-select" class="input" on:change={switchLang} bind:value={$currentLocale}>
 					<option value="zh">{LANG_NAMES.zh}</option>
 					<option value="en">{LANG_NAMES.en}</option>
 					<option value="de">{LANG_NAMES.de}</option>
 				</select>
-				<button class="input" style="width:auto;padding:6px 10px;cursor:pointer;" on:click={toggleTheme}>{t('labels.theme')}: {theme}</button>
+				<button class="input" style="width:auto;padding:6px 10px;cursor:pointer;" on:click={toggleTheme}>{$t('labels.theme')}: {theme}</button>
 			</div>
 		</div>
 		<section>
-			<div class="label">{t('labels.camera')}</div>
-			<Tooltip><span slot="trigger" class="label">{t('labels.cameraModel')}</span><div><h4>{t('labels.cameraModel')}</h4>{t('tips.cameraModel')}</div></Tooltip>
+			<div class="label">{$t('labels.camera')}</div>
+			<Tooltip><span slot="trigger" class="label">{$t('labels.cameraModel')}</span><div><h4>{$t('labels.cameraModel')}</h4>{$t('tips.cameraModel')}</div></Tooltip>
 			<select class="input" on:change={onCameraPresetChange}>
 				<option value="-1">—</option>
 				{#each CAMERA_PRESETS as c, i}
@@ -151,27 +159,27 @@
 			
 			<div class="row">
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.cameraPixelsWidth')}</span><div><h4>{t('labels.cameraPixelsWidth')}</h4>{t('tips.cameraPixelsWidth')}</div></Tooltip>
-					<input class="input" type="number" step="1" bind:value={cameraWidthPx} placeholder="{t('labels.cameraPixelsWidth')}">
+					<Tooltip><span slot="trigger" class="label">{$t('labels.cameraPixelsWidth')}</span><div><h4>{$t('labels.cameraPixelsWidth')}</h4>{$t('tips.cameraPixelsWidth')}</div></Tooltip>
+					<input class="input" type="number" step="1" bind:value={cameraWidthPx} placeholder="{$t('labels.cameraPixelsWidth')}">
 				</div>
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.cameraPixelsHeight')}</span><div><h4>{t('labels.cameraPixelsHeight')}</h4>{t('tips.cameraPixelsHeight')}</div></Tooltip>
-					<input class="input" type="number" step="1" bind:value={cameraHeightPx} placeholder="{t('labels.cameraPixelsHeight')}">
+					<Tooltip><span slot="trigger" class="label">{$t('labels.cameraPixelsHeight')}</span><div><h4>{$t('labels.cameraPixelsHeight')}</h4>{$t('tips.cameraPixelsHeight')}</div></Tooltip>
+					<input class="input" type="number" step="1" bind:value={cameraHeightPx} placeholder="{$t('labels.cameraPixelsHeight')}">
 				</div>
 			</div>
 			<div class="row" style="margin-top:8px;">
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.pixelPitch')}</span><div><h4>{t('labels.pixelPitch')}</h4>{t('tips.sensorPixel')}</div></Tooltip>
+					<Tooltip><span slot="trigger" class="label">{$t('labels.pixelPitch')}</span><div><h4>{$t('labels.pixelPitch')}</h4>{$t('tips.sensorPixel')}</div></Tooltip>
 					<input class="input" type="number" step="0.01" bind:value={pixelPitchUm}>
 				</div>
 				<div></div>
 			</div>
 		</section>
 		<section>
-			<div class="label">{t('labels.systemParams')}</div>
+			<div class="label">{$t('labels.systemParams')}</div>
 			<div class="row">
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.objectiveMag')}</span><div><h4>{t('labels.objectiveMag')}</h4>{t('tips.objectiveMag')}</div></Tooltip>
+					<Tooltip><span slot="trigger" class="label">{$t('labels.objectiveMag')}</span><div><h4>{$t('labels.objectiveMag')}</h4>{$t('tips.objectiveMag')}</div></Tooltip>
 					<div class="row">
 						<select class="input" on:change={onObjectiveSelect} bind:value={objectiveMagnification}>
 							{#each OBJECTIVE_OPTIONS as m}
@@ -182,13 +190,13 @@
 					</div>
 				</div>
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.NA')}</span><div><h4>{t('labels.NA')}</h4>{t('tips.NA')}</div></Tooltip>
+					<Tooltip><span slot="trigger" class="label">{$t('labels.NA')}</span><div><h4>{$t('labels.NA')}</h4>{$t('tips.NA')}</div></Tooltip>
 					<input class="input" type="number" step="0.001" bind:value={numericalAperture}>
 				</div>
 			</div>
 			<div class="row" style="margin-top:8px;">
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.fieldNumber')}</span><div><h4>{t('labels.fieldNumber')}</h4>{t('tips.fieldNumber')}</div></Tooltip>
+					<Tooltip><span slot="trigger" class="label">{$t('labels.fieldNumber')}</span><div><h4>{$t('labels.fieldNumber')}</h4>{$t('tips.fieldNumber')}</div></Tooltip>
 					<div class="row">
 						<select class="input" bind:value={fieldNumberMm}>
 							{#each FN_OPTIONS as f}
@@ -199,11 +207,11 @@
 					</div>
 				</div>
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.couplerMag')}</span><div><h4>{t('labels.couplerMag')}</h4>{t('tips.couplerMag')}</div></Tooltip>
+					<Tooltip><span slot="trigger" class="label">{$t('labels.couplerMag')}</span><div><h4>{$t('labels.couplerMag')}</h4>{$t('tips.couplerMag')}</div></Tooltip>
 					<div class="row">
 						<select class="input" bind:value={couplerMagnification}>
-							{#each C_ADAPTER_OPTIONS as c}
-								<option value={c}>{c}</option>
+							{#each C_ADAPTER_OPTIONS as opt}
+								<option value={opt.value}>{opt.label}</option>
 							{/each}
 						</select>
 						<input class="input" type="number" step="0.01" bind:value={couplerMagnification}>
@@ -212,18 +220,18 @@
 			</div>
 		</section>
 		<section>
-			<Tooltip><span slot="trigger" class="label">{t('labels.wavelength')}</span><div><h4>{t('labels.wavelength')}</h4>{t('tips.wavelength')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="label">{$t('labels.wavelength')}</span><div><h4>{$t('labels.wavelength')}</h4>{$t('tips.wavelength')}</div></Tooltip>
 			<input class="input" type="number" min="0.4" max="0.7" step="0.01" bind:value={wavelengthUm}>
 		</section>
 		<section>
-			<Tooltip><span slot="trigger" class="label">{t('labels.display')}</span><div><h4>{t('labels.display')}</h4>{t('tips.display')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="label">{$t('labels.display')}</span><div><h4>{$t('labels.display')}</h4>{$t('tips.display')}</div></Tooltip>
 			<div class="row">
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.diagonalInch')}</span><div><h4>{t('labels.diagonalInch')}</h4>{t('tips.diagonalInch')}</div></Tooltip>
+					<Tooltip><span slot="trigger" class="label">{$t('labels.diagonalInch')}</span><div><h4>{$t('labels.diagonalInch')}</h4>{$t('tips.diagonalInch')}</div></Tooltip>
 					<input class="input" type="number" step="0.1" bind:value={displayDiagonalInch}>
 				</div>
 				<div>
-					<Tooltip><span slot="trigger" class="label">{t('labels.displayRes')}</span><div><h4>{t('labels.displayRes')}</h4>{t('tips.displayRes')}</div></Tooltip>
+					<Tooltip><span slot="trigger" class="label">{$t('labels.displayRes')}</span><div><h4>{$t('labels.displayRes')}</h4>{$t('tips.displayRes')}</div></Tooltip>
 					<div class="row">
 						<input class="input" type="number" step="1" bind:value={displayWidthPx}>
 						<input class="input" type="number" step="1" bind:value={displayHeightPx}>
@@ -235,13 +243,13 @@
 
 	<!-- Center: Visualization -->
 	<div class="center">
-		<div class="header">{t('titles.visualization')}</div>
+		<div class="header">{$t('titles.visualization')}</div>
 		<div class="row" style="margin-bottom:4px;">
 			<div>
-				<Tooltip><span slot="trigger" class="label">{t('labels.sample')}</span><div><h4>{t('labels.sample')}</h4>{t('tips.sample')}</div></Tooltip>
+				<Tooltip><span slot="trigger" class="label">{$t('labels.sample')}</span><div><h4>{$t('labels.sample')}</h4>{$t('tips.sample')}</div></Tooltip>
 				<select class="input" bind:value={selectedSampleKey}>
 					{#each SAMPLES as s}
-						<option value={s.key}>{s.label === 'samples.hatch' ? t(s.label) : s.label}</option>
+						<option value={s.key}>{s.label === 'samples.hatch' ? $t(s.label) : s.label}</option>
 					{/each}
 				</select>
 			</div>
@@ -275,44 +283,49 @@
 				<text class="viz-labels" x="140" y="120" text-anchor="middle" font-size="6">D = {rectDiagonalInPlane.toFixed(2)} mm</text>
 				<!-- top-left stacked labels -->
 				<g class="viz-labels" font-size="6" text-anchor="start">
-					<text x="0" y="8">{t('misc.fnLabel', { value: fieldNumberMm })}</text>
-					<text x="0" y="20">{t('misc.projectionLabel', { w: rectWidthInPlane.toFixed(2), h: rectHeightInPlane.toFixed(2) })}</text>
-					<text x="0" y="32">{t('misc.projectionDiagonalLabel', { d: rectDiagonalInPlane.toFixed(2) })}</text>
-					<text x="0" y="44">{t('misc.couplerLabel', { value: couplerMagnification })}</text>
+					<text x="0" y="8">{$t('misc.fnLabel', { value: fieldNumberMm })}</text>
+					<text x="0" y="20">{$t('misc.projectionLabel', { w: rectWidthInPlane.toFixed(2), h: rectHeightInPlane.toFixed(2) })}</text>
+					<text x="0" y="32">{$t('misc.projectionDiagonalLabel', { d: rectDiagonalInPlane.toFixed(2) })}</text>
+					<text x="0" y="44">{$t('misc.couplerLabel', { value: couplerMagnification })}</text>
+				</g>
+				<!-- top-right stacked labels -->
+				<g class="viz-labels" font-size="6" text-anchor="end">
+					<text x="240" y="8">{$t('misc.cameraResLabel', { w: cameraWidthPx, h: cameraHeightPx })}</text>
+					<text x="240" y="20">{$t('misc.pixelPitchLabel', { value: pixelPitchUm })}</text>
 				</g>
 			</svg>
 		</div>
 
 		<div style="color:#8ea1b8;font-size:12px;margin-top:6px;display:flex;gap:16px;align-items:center;">
-			<div>{t('misc.fnLabel', { value: fieldNumberMm })}</div>
-			<div>{t('misc.projectionLabel', { w: rectWidthInPlane.toFixed(2), h: rectHeightInPlane.toFixed(2) })}</div>
+			<div>{$t('misc.fnLabel', { value: fieldNumberMm })}</div>
+			<div>{$t('misc.projectionLabel', { w: rectWidthInPlane.toFixed(2), h: rectHeightInPlane.toFixed(2) })}</div>
 		</div>
 	</div>
 
 	<!-- Right: Results -->
 	<div class="sidebar-right">
-		<div class="header">{t('titles.results')}</div>
-		<div class="group-title">{t('groups.sensor')}</div>
+		<div class="header">{$t('titles.results')}</div>
+		<div class="group-title">{$t('groups.sensor')}</div>
 		<div class="grid-3">
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.sensorDiagonal')}</h3><div class="value">{out.sensorDiagonalMm}<span class="unit"> mm</span></div><div class="label">{out.sensorWidthMm} × {out.sensorHeightMm} mm</div></span><div><h4>{t('cards.sensorDiagonal')}</h4>{t('tips.sensorDiagonal')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.projectionDiagonal')}</h3><div class="value">{out.projectionDiagonalMm}<span class="unit"> mm</span></div></span><div><h4>{t('cards.projectionDiagonal')}</h4>{t('tips.projectionDiagonal')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.coverage')}</h3><div class="value">{out.coverageRatioPct}<span class="unit"> %</span></div></span><div><h4>{t('cards.coverage')}</h4>{t('tips.coverage')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.coverageEval')}</h3><div class={out.coverageStatus === 'ok' ? 'badge ok' : 'badge err'}>{t(`coverage.${out.coverageStatus}`)}</div></span><div><h4>{t('cards.coverageEval')}</h4>{t('tips.coverageEval')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.sensorDiagonal')}</h3><div class="value">{out.sensorDiagonalMm}<span class="unit"> mm</span></div><div class="label">{out.sensorWidthMm} × {out.sensorHeightMm} mm</div></span><div><h4>{$t('cards.sensorDiagonal')}</h4>{$t('tips.sensorDiagonal')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.projectionDiagonal')}</h3><div class="value">{out.projectionDiagonalMm}<span class="unit"> mm</span></div></span><div><h4>{$t('cards.projectionDiagonal')}</h4>{$t('tips.projectionDiagonal')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.coverage')}</h3><div class="value">{out.coverageRatioPct}<span class="unit"> %</span></div></span><div><h4>{$t('cards.coverage')}</h4>{$t('tips.coverage')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.coverageEval')}</h3><div class={out.coverageStatus === 'ok' ? 'badge ok' : 'badge err'}>{$t(`coverage.${out.coverageStatus}`)}</div></span><div><h4>{$t('cards.coverageEval')}</h4>{$t('tips.coverageEval')}</div></Tooltip>
 		</div>
 
-		<div class="group-title">{t('groups.sampling')}</div>
+		<div class="group-title">{$t('groups.sampling')}</div>
 		<div class="grid-3">
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.opticalResolution')}</h3><div class="value">{out.rayleighResolutionUm}<span class="unit"> μm</span></div></span><div><h4>{t('cards.opticalResolution')}</h4>{t('tips.opticalResolution')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.digitalResolution')}</h3><div class="value">{out.objectPixelSizeUm}<span class="unit"> μm/px</span></div></span><div><h4>{t('cards.objectPixel')}</h4>{t('tips.objectPixel')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.sampling')}</h3><div class={out.samplingStatus === 'optimal' ? 'badge ok' : 'badge err'}>{t(`status.${out.samplingStatus}`)}</div></span><div><h4>{t('cards.sampling')}</h4>{t('tips.sampling')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.opticalResolution')}</h3><div class="value">{out.rayleighResolutionUm}<span class="unit"> μm</span></div></span><div><h4>{$t('cards.opticalResolution')}</h4>{$t('tips.opticalResolution')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.digitalResolution')}</h3><div class="value">{out.objectPixelSizeUm}<span class="unit"> μm/px</span></div></span><div><h4>{$t('cards.objectPixel')}</h4>{$t('tips.objectPixel')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.sampling')}</h3><div class={out.samplingStatus === 'optimal' ? 'badge ok' : 'badge err'}>{$t(`status.${out.samplingStatus}`)}</div></span><div><h4>{$t('cards.sampling')}</h4>{$t('tips.sampling')}</div></Tooltip>
 		</div>
 
-		<div class="group-title">{t('groups.opticsFov')}</div>
+		<div class="group-title">{$t('groups.opticsFov')}</div>
 		<div class="grid-3">
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.totalMag')}</h3><div class="value">{out.totalMagnification}×</div></span><div><h4>{t('cards.totalMag')}</h4>{t('tips.totalMag')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.objectFov')}</h3><div class="value">{out.objectFovWidthMm} × {out.objectFovHeightMm}<span class="unit"> mm</span></div></span><div><h4>{t('cards.objectFov')}</h4>{t('tips.objectFov')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.optimumArray')}</h3><div class="value">{out.optimumArrayWidthPx} × {out.optimumArrayHeightPx}<span class="unit"> px</span></div></span><div><h4>{t('cards.optimumArray')}</h4>{t('tips.optimumArray')}</div></Tooltip>
-			<Tooltip><span slot="trigger" class="card"><h3>{t('cards.displayMag')}</h3><div class="value">{out.displayMagnification ?? '—'}{#if out.displayMagnification}<span class="unit">×</span>{/if}</div></span><div><h4>{t('cards.displayMag')}</h4>{t('tips.displayMag')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.totalMag')}</h3><div class="value">{out.totalMagnification}×</div></span><div><h4>{$t('cards.totalMag')}</h4>{$t('tips.totalMag')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.objectFov')}</h3><div class="value">{out.objectFovWidthMm} × {out.objectFovHeightMm}<span class="unit"> mm</span></div></span><div><h4>{$t('cards.objectFov')}</h4>{$t('tips.objectFov')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.optimumArray')}</h3><div class="value">{out.optimumArrayWidthPx} × {out.optimumArrayHeightPx}<span class="unit"> px</span></div></span><div><h4>{$t('cards.optimumArray')}</h4>{$t('tips.optimumArray')}</div></Tooltip>
+			<Tooltip><span slot="trigger" class="card"><h3>{$t('cards.displayMag')}</h3><div class="value">{out.displayMagnification ?? '—'}{#if out.displayMagnification}<span class="unit">×</span>{/if}</div></span><div><h4>{$t('cards.displayMag')}</h4>{$t('tips.displayMag')}</div></Tooltip>
 		</div>
 	</div>
 </div>
