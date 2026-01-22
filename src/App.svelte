@@ -43,12 +43,12 @@
 
 	let objectiveMagnification = 10; // default 10x
 	let numericalAperture = DEFAULT_NA[objectiveMagnification] ?? 0.25;
-	let fieldNumberMm = 23; // default 23
+	let fieldNumberMm = 22; // default 22
 	let couplerMagnification = 0.69;
 
 	let wavelengthUm = 0.55; // 550 nm
 
-	let displayDiagonalInch = 21.0; // default 21"
+	let displayDiagonalInch = 13.0; // default 13"
 	let displayWidthPx = 1920;
 	let displayHeightPx = 1080;
 
@@ -287,6 +287,9 @@
 					<text x="0" y="20">{$t('misc.projectionLabel', { w: rectWidthInPlane.toFixed(2), h: rectHeightInPlane.toFixed(2) })}</text>
 					<text x="0" y="32">{$t('misc.projectionDiagonalLabel', { d: rectDiagonalInPlane.toFixed(2) })}</text>
 					<text x="0" y="44">{$t('misc.couplerLabel', { value: couplerMagnification })}</text>
+					<text x="0" y="56" fill={out.coverageStatus === 'ok' ? 'var(--ok)' : 'var(--error)'}>
+						({$t(`coverage.${out.coverageStatus}`)})
+					</text>
 				</g>
 				<!-- top-right stacked labels -->
 				<g class="viz-labels" font-size="6" text-anchor="end">
